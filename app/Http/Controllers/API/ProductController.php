@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\ProductImage;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Drivers\Gd\Driver;
@@ -96,5 +97,13 @@ class ProductController extends Controller
             'Content-Type' => 'application/json;charset=UTF-8',
             'Charset' => 'utf-8'
         ], JSON_UNESCAPED_UNICODE);
+    }
+    public function getList()
+    {
+        $data = Product::with('category')
+            ->with("product_images")
+            ->get();
+        return response()->json($data)
+            ->header('Content-Type', 'application/json; charset=utf-8');
     }
 }
